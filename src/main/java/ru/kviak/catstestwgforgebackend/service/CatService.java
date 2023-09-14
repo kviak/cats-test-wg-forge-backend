@@ -18,4 +18,8 @@ public class CatService {
     public List<Cat> getAllCats(String attribute, String order, int offset, int limit){
         return catRepository.findAll(PageRequest.of(offset, limit, Sort.by(Sort.Direction.fromString(order.toUpperCase()),attribute))).getContent();
     }
+
+    public void saveCat(Cat cat){
+        catRepository.save(cat);
+    }
 }

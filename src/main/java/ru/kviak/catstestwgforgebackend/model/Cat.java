@@ -1,26 +1,23 @@
 package ru.kviak.catstestwgforgebackend.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+import ru.kviak.catstestwgforgebackend.utill.Color;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name = "cats")
 public class Cat {
     @Id
     @Column(name = "name")
     private String name;
     @Column(name = "color")
-    private String color; // TODO: create color enum.
+    @Enumerated(value = EnumType.ORDINAL)
+    private Color color; // TODO: create color enum.
     @Column(name = "tail_length")
     private Integer tailLength;
     @Column(name = "whiskers_length")
