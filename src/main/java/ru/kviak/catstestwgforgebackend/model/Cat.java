@@ -2,7 +2,6 @@ package ru.kviak.catstestwgforgebackend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.kviak.catstestwgforgebackend.utill.Color;
 
 @Getter
 @Setter
@@ -16,8 +15,7 @@ public class Cat {
     @Column(name = "name")
     private String name;
     @Column(name = "color")
-    @Enumerated(value = EnumType.ORDINAL)
-    private Color color; // TODO: create color enum.
+    private String color;
     @Column(name = "tail_length")
     private Integer tailLength;
     @Column(name = "whiskers_length")
