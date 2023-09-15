@@ -1,6 +1,6 @@
 package ru.kviak.catstestwgforgebackend.controller;
 
-import com.google.common.util.concurrent.RateLimiter;
+import io.github.bucket4j.Bucket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,19 +14,22 @@ import java.util.List;
 public class CatController {
 
     private final CatService catService;
-    private final RateLimiter rateLimiter = RateLimiter.create(10);
+    private final Bucket bucket;
 
     @GetMapping("/ping")
     public ResponseEntity<String> ping() {
-        rateLimiter.acquire(1);
-        return ResponseEntity.ok("Cats Service. Version 0.1");
+        if (bucket.tryConsume(1)) {
+            return ResponseEntity.ok("Cats Service. Version 0.1");
+        } else {
+            return ResponseEntity.status(429).body("Exceeded the limit of ten requests per minute! 429");
+        }
+
     }
     @GetMapping("/cats")
     public ResponseEntity<List<Cat>> getCats(@RequestParam(defaultValue = "name", name = "attribute") String attribute,
                                              @RequestParam(defaultValue = "desc",name = "order") String order,
                                              @RequestParam(defaultValue = "0",name = "offset") int offset,
                                              @RequestParam (defaultValue = "100",name ="limit") int limit){
-        rateLimiter.acquire(1);
         return ResponseEntity.ok(catService.getAllCats(attribute, order, offset, limit));
     }
 
